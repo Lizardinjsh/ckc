@@ -12,7 +12,7 @@ $params = [
     ":apraksts" => $_POST["apraksts"]
 ];
 $db->execute($query, $params);
-header('location: /kolektivi');
+header('location: /collectives');
 die();
 }
 

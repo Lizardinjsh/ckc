@@ -1,37 +1,24 @@
 <?php
+require "Database.php";
+$config = require "config.php";
 
-$sql = "SELECT deju_kolektivi, apraksts FROM collectives WHERE  deju_kolektivi = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_GET['deju_kolektivi']); 
-$stmt->execute();
-$result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    echo "<p>deju_kolektivi: " . $row["deju_kolektivi"] . "</p>";
-    echo "<p>apraksts: " . $row["apraksts"] . "</p>";
-    echo "<form method='post' action='delete.php'>";
-    echo "<input type='hidden' name='id' value='" . $row["id"] . "'>";
-    echo "<input type='submit' value='Delete'>";
-    echo "</form>";
-} else {
-    echo "0 results";
+if(isset($_GET["id"]))
+{
+    $query = "DELETE FROM pasakumi WHERE id = $_GET[id];";
+    $params = [];
+    $db = new Database($config);
+    $events = $db->execute($query, $params)->fetchALL();
+}
+else
+{
+    $query = "SELECT * FROM pasakumi"; 
+    $params = [];
 }
 
-$stmt->close();
+$query = "SELECT * FROM pasakumi"; 
+$params = [];
+$db = new Database($config);
+$events = $db->execute($query, $params)->fetchALL();
 
-if ($_SERVER["REQUEST_METHOD"] == "pasakumi") {
-    $id_to_delete = $_POST['deju_kolektivi'];
-    $sql_delete = "DELETE FROM collectives WHERE deju_kolektivi = ?";
-    $stmt_delete = $conn->prepare($sql_delete);
-    $stmt_delete->bind_param("i", $id_to_delete);
-    if ($stmt_delete->execute() === TRUE) {
-        echo "Record deleted successfully";
-    } else {
-        echo "Error deleting record: " . $conn->error;
-    }
-    $stmt_delete->close();
-}
-
-$conn->close();
-?>
+require "views/collectives-delete.view.php";

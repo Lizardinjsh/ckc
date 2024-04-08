@@ -5,7 +5,7 @@
 <ul>
 <?php
   foreach($pasakumi as $pasak) {
-  echo "<li>" . $pasak["nosaukums"] . " / " . $pasak["datums"] . " / " . $pasak["norises_vieta"] . "</li>";
+  echo "<li>" . $pasak["date_and_time"] . " / " . $pasak["title"] . " / " . $pasak["place"] . "</li>";
   }
   ?>
 </ul>
